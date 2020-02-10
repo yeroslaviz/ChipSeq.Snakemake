@@ -1,0 +1,12 @@
+---
+title: "Automated workflow for ChIP-Seq analysis"
+author: "AY"
+date: "2/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This workflow should able an automated workflow of chip-seq data sets.
