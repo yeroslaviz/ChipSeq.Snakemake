@@ -1,0 +1,22 @@
+name: chipseq
+channels:
+   - bioconda
+   - conda-forge
+   - r
+   - bioinfo
+dependencies:
+   - snakemake-minimal =5.2.4
+   - python =3.6
+   - samtools =1.10
+   - bedtools =2.29.*
+   - cutadapt =2.8
+   - fastqc =0.11.*
+   - rseqc =3.0.*
+   - bwa =0.7.17
+   - bowtie2 =2.3.5
+   - picard =2.21.*
+   - macs =2.2.*
+   - bioconductor-chipseeker =1.22.*
+   - segemehl =0.3.4
+   - deeptools =3.3.2
+   - meme =5.1.0
