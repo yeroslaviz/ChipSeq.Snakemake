@@ -15,7 +15,7 @@ dependencies:
    - bwa =0.7.17
    - bowtie2 =2.3.5
    - picard =2.21.*
-   - macs =2.2.*
+   - macs =2.2.6
    - bioconductor-chipseeker =1.22.*
    - segemehl =0.3.4
    - deeptools =3.3.2
