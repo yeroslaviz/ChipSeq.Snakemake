@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Get the appropriate genome for the analysis from the Ensembl FTP server.
 # To get the correct data copy-paste the link for the fastA and gtf files in the correct row.
 
@@ -38,3 +39,11 @@ project: "P000"
 path: "/fs/pool/pool-bcfngs/fastq_files/P000/P000_Testrun/conc.fastq/"
 # Which organism to map the data to
 org: "Cel.WBcel235"
+=======
+
+
+# Genome parameters
+genome_fasta: "ftp://ftp.ensembl.org/pub/release-98/fasta/saccharomyces_cerevisiae/dna/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa.gz"
+genome_gtf:   "ftp://ftp.ensembl.org/pub/release-98/gtf/saccharomyces_cerevisiae/Saccharomyces_cerevisiae.R64-1-1.98.gtf.gz"
+# genome_size:
+>>>>>>> 2d5aeaba5871101606faceabd0a3dce3358a2b0b

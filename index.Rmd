@@ -14,6 +14,7 @@ This workflow should able an automated workflow of chip-seq data sets.
 
 An [environemnt.yaml](environment.yaml) file was created to contain the list of packages installed for the environment.
 
+<<<<<<< HEAD
 The installation with the above file failed due to conflicts, so I decided to do it manually. I have created the conda env with the command `conda create -n ChipSeq.Snakemake`. Then, after activating the environment, I installed the tools manually.
 
 - deeptools
@@ -23,12 +24,17 @@ The installation with the above file failed due to conflicts, so I decided to do
 
 (e.g. `conda install bwa`)
 
+=======
+>>>>>>> 2d5aeaba5871101606faceabd0a3dce3358a2b0b
 A [config.yaml] file contains all the needed parameters for the analysis. For each analysis, some parameters __must__ be changed for the workflow to run correctly.
 
 1. link to the organism's fastA file
 2. link to the gtf file
 
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> 2d5aeaba5871101606faceabd0a3dce3358a2b0b
