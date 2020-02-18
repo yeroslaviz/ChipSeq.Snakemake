@@ -334,11 +334,13 @@ $(document).ready(function () {
 <li>link to the organism’s fastA file</li>
 <li>link to the gtf file</li>
 </ol>
-<div id="creating-teh-conda-environment" class="section level1">
-<h1>creating teh conda environment</h1>
+<div id="creating-the-conda-environment" class="section level1">
+<h1>creating the conda environment</h1>
 <pre class="bash"><code>conda create --name chipseq
 
 conda activate chipseq
+
+conda config --add channels bioconda # add the bioconda channel to the conda env.
 
 conda install snakemake-minimal  samtools bedtools cutadapt fastqc rseqc bwa bowtie2 picard macs2 bioconductor-chipseeker segemehl deeptools meme segemehl -c bioconda -c conda-forge -c r -c bioinfo
 conda install -c conda-forge graphviz # to enable the dot tool to create directed graphs</code></pre>
@@ -357,8 +359,25 @@ effGenomeSize: 2652783500</code></pre>
 </div>
 <div id="the-snakefile" class="section level1">
 <h1>the <code>snakefile</code></h1>
-<p>For the workflow a <a href="ChipSeq.Snakemake"><code>snakefile</code></a> was created. Here, each steps is described as a rule and they are executed in a directed order of steps, each one depending on one (or few) steps before. The order of execution is also visualized in the attach image.</p>
-<p><img src="figures/graphviz.svg" /></p>
+<p>For the workflow a <a href="ChipSeq.Snakemake"><code>snakefile</code></a> was created. Here, each steps is described as a rule and they are executed in a directed order of steps, each one depending on one (or few) steps before. The order of execution is also visualized in the attached image.</p>
+<p><img src="figures/dag.chipseq.workflow.snakemake.svg" /></p>
+<p>It begins with the fastq files, converts them to different formats (bdg, bam, bai, peaks, etc.) and run different analyses.</p>
+<p># Snakefile run</p>
+<p>the snakefile run starts with mapping the files using the given mapper (in the example here I’ll use <code>bowtie2</code>) (the samples in the examples commands were chosen arbitrary.)</p>
+<pre class="bash"><code>bowtie2 --threads 16 --dovetail --very-sensitive-local --no-unal --no-mixed --no-discordant -X 2000 -x /fs/pool/pool-bcfngs/genomes/Dme.BDGP6.22/bowtie2Index/Dme.BDGP6.22 -1 2Aub_W_2_22_11.conc.R1.fastq.gz -2 2Aub_W_2_22_11.conc.R2.fastq.gz 2&gt; P000/Dme.BDGP6.22/bowtie2/2Aub_W_2_22_11.log | samtools view -Sbhu -q 7 -@8 - | samtools sort -@8 - -o P000/Dme.BDGP6.22/bowtie2/2Aub_W_2_22_11.sorted.bam
+
+picard MarkDuplicates I=P000/Dme.BDGP6.22/bowtie2/in_W_2_22_11.sorted.bam O=P000/Dme.BDGP6.22/bowtie2/in_W_2_22_11.rmdup.bam M=P000/Dme.BDGP6.22/bowtie2/in_W_2_22_11_rmdup_metric.txt REMOVE_DUPLICATES=true
+
+samtools index P000/Dme.BDGP6.22/bowtie2/2Aub_W_2_22_11.rmdup.bam</code></pre>
+<p>Next the <code>bam</code> files are converted to <code>bedgraph</code></p>
+<pre class="bash"><code>bamCoverage --bam P000/Dme.BDGP6.22/bowtie2/2Aub_W_2_22_11.rmdup.bam --outFileName P000/Dme.BDGP6.22/bowtie2/bedgraph/2Aub_W_2_22_11.rmdup.bdg --outFileFormat bedgraph --binSize 10 --effectiveGenomeSize 2652783500 --extendReads 160 --normalizeUsing CPM --ignoreForNormalization chrX chrM</code></pre>
+<p>Peak calling is done using the <code>macs2</code> tool</p>
+<pre class="bash"><code>macs2 callpeak -t P000/Dme.BDGP6.22/bowtie2/2Aub_W_2_22_11.rmdup.bam -c P000/Dme.BDGP6.22/bowtie2/in_W_2_22_11.rmdup.bam -f BAM -g mm -n W_2_22_11 -B -q 0.05 --outdir P000/Dme.BDGP6.22/bowtie2/macs2/
+macs2 callpeak -t P000/Dme.BDGP6.22/bowtie2/2Aub_W_2_22_11.rmdup.bam -c P000/Dme.BDGP6.22/bowtie2/in_W_2_22_11.rmdup.bam -f BAM -g mm -n W_2_22_11 --broad -B -q 0.05 --outdir P000/Dme.BDGP6.22/bowtie2/macs2/</code></pre>
+<p>And the bedgraph files can also be comapred with <code>macs2</code> to generate fold-enrichment track.</p>
+<pre class="bash"><code>macs2 bdgcmp -t P000/Dme.BDGP6.22/bowtie2/bedgraph/2Aub_W_2_22_11.rmdup.bdg -c P000/Dme.BDGP6.22/bowtie2/bedgraph/in_W_2_22_11.rmdup.bdg -o W_2_22_11 --outdir P000/Dme.BDGP6.22/bowtie2/macs2/W_2_22_11.compared.bdg -m FE</code></pre>
+<p><strong>add detailed-summary</strong> when the workflow is done</p>
+<p><strong>chipseeker</strong></p>
 </div>
 
 
