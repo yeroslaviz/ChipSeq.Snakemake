@@ -343,6 +343,7 @@ conda activate chipseq
 conda config --add channels bioconda # add the bioconda channel to the conda env.
 
 conda install snakemake-minimal  samtools bedtools cutadapt fastqc rseqc bwa bowtie2 picard macs2 bioconductor-chipseeker segemehl deeptools meme segemehl -c bioconda -c conda-forge -c r -c bioinfo
+# This is not working on the cluster, so a workaround is to create the dag file and copy-paste it to the online version of the tool (https://dreampuf.github.io/GraphvizOnline/). 
 conda install -c conda-forge graphviz # to enable the dot tool to create directed graphs</code></pre>
 </div>
 <div id="setting-the-config.yaml-file" class="section level1">
